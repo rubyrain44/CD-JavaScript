@@ -1,0 +1,210 @@
+
+
+*Note- Items labeled <<ModelName>> require the model name to be capitalized 
+*Note- Items labeled <<modelName>> require the model name to be lowercase 
+*Note- Items labeled <<ModelNamePlural>> require the model name to be plural
+
+Beginning
+
+    Create parent folder terminal
+
+    mkdir server
+
+    npx create-react-app client 
+
+    cd client 
+
+    npm install axios react-router-dom 
+
+    touch .gitignore
+
+
+Inside of the Server File in the Terminal
+
+    //Creates our package json
+    run npm init -y 
+
+    npm install express mongoose cors
+
+    mkdir config controllers models routes
+
+    touch server.js .gitignore
+
+
+Working With Backend 
+
+    server folder 
+
+        config folder 
+            mongoose.config.js
+
+        controllers folder
+            <<modelName>>.controller.js
+
+        models folder
+            <<modelName>>.model.js
+
+        routes folder
+            <<modelName>>.route.js
+
+        server.js file
+
+        .gitignore
+
+            /node_modules 
+
+
+Folder Structure
+
+    Config
+
+        mongoose.config.js 
+
+            const mongoose = require('mongoose');
+
+            mongoose.connect('mongodb://127.0.0.1:27017/<<ProjectName>>DB', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+            })
+            .then(() => console.log('Established a connection to the database'))
+            .catch(err => console.log('Something went wrong when connecting to the database ', err));
+
+    Models 
+
+        <<modelName>>.model.js 
+
+            const mongoose = require('mongoose');
+
+            //create the schema 
+
+                const <<ModelName>>Schema = new mongoose.Schema ({
+                    <<Item>>: {
+                        type: String,
+                        required: [true, "title is required"],
+                        minlength: [6, "title must be at least 6 characters long"] 
+                    }
+                },
+                    { timestamps: true }
+                );
+
+
+        module.exports = mongoose.model("<<ModelName>>", <<ModelName>>Schema);
+
+
+    Controllers 
+
+        <<modelName>>.controller.js 
+
+            const <<ModelName>> = require ("../models/<<modelName>>.model");
+
+            //implement your CRUD functionality-Label Errors individually for recognition 
+
+            //Find All 
+            module.exports.findAll<<ModelNamePlural>> = (req, res) => {
+                <<ModelName>>.find()
+                    .then((all<<ModelNamePlural>>) => {
+                        res.json(all<<ModelNamePlural>>)
+                    })
+                    .catch((err) => {
+                        res.json({message: "Find All: Something went wrong", error: err})
+                });
+            }
+
+            //Find One 
+            module.exports.findOne<<ModelName>> = (req, res) => {
+            <<ModelName>>.findById({ _id: req.params.id })
+                .then(one<<ModelName>> => {
+                    res.json({ <<modelName>>: one<<ModelName>> })
+                })
+                .catch((err) => {
+                    res.json({ message: 'Something went wrong', error: err })
+                });}
+
+            //Create
+            module.exports.createNew<<ModelName>> = (req, res) => {
+            <<ModelName>>.create(req.body)
+                .then(new<<ModelName>> => {
+                    res.json({ <<modelName>>: new<<ModelName>> })
+                })
+                .catch((err) => {
+                    res.json({ message: 'Something went wrong', error: err })
+                });}
+
+            //Update 
+            module.exports.update<<ModelName>>ById = (req, res) => {
+            <<ModelName>>.findByIdAndUpdate(
+                { _id: req.params.id },
+                req.body,
+                { new: true, runValidators: true }
+                )
+                .then(updated<<ModelName>> => {
+                    res.json({ <<modelName>>: updated<<ModelName>> })
+                })
+                .catch((err) => {
+                    res.json({ message: 'Something went wrong', error: err })
+                });}
+
+            //Delete 
+            module.exports.deleteAnExisting<<ModelName>> = (req, res) => {
+            <<ModelName>>.findByIdAndDelete({ _id: req.params.id })
+                .then(result => {
+                    res.json({ result: result })
+                })
+                .catch((err) => {
+                    res.json({ message: 'Something went wrong', error: err })
+                });}
+
+
+    Routes 
+
+        <<modelName>>.route.js
+
+            const <<ModelName>>Controller = require("../controllers/<<modelName>>.controller");
+
+            module.exports = app => {
+                app.get('/api/<<modelName>>', <<ModelName>>Controller.findAll<<ModelNamePlural>>);
+                app.get('/api/<<modelName>>/:id', <<ModelName>>Controller.findOne<<ModelName>>);
+                app.patch('/api/<<modelName>>/:id', <<ModelName>>Controller.update<<ModelName>>ById);
+                app.post('/api/<<modelName>>', <<ModelName>>Controller.createNew<<ModelName>>);
+                app.delete('/api/<<modelName>>/:id', <<ModelName>>Controller.deleteAnExisting<<ModelName>>);
+            }
+
+
+Inside of server.js 
+
+    connect your server to express 
+
+        const express = require('express'); 
+        const app = express();
+        const cors = require('cors');
+        const port = 8000;
+
+        app.use(cors());
+        app.use(express.json());    
+
+        app.use(express.json(), express.urlencoded({extended:true}));
+
+
+        require('./config/mongoose.config');
+        require('./routes/<<modelName>>.routes')(app);
+
+        app.listen(port, () => console.log(`the server is all filed up on port ${port}`));
+
+
+Running Your Servers
+
+    Inside the Terminal-Client Folder
+
+        npm start 
+
+    Inside the Terminal-Server Folder
+
+        nodemon server.js
+
+
+*Note- Do Not Forget to add /node_modules to your .gitignore
+
+    
+
+
+

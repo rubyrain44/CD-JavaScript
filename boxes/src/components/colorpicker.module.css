@@ -1,0 +1,23 @@
+.colorpicker {
+    width: 100px;
+    padding: 3px;
+    margin: 5px;
+}
+
+.red {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
+.blue {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(14, 56, 192);
+}
+
+.purple{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(101, 14, 182);
+}

@@ -1,0 +1,40 @@
+body {
+  justify-content: center;
+  display: flex;
+}
+
+.App {
+  text-align: center;
+  border: 2px solid gray;
+  margin: 30px;
+  padding: 5px 30px;
+}
+
+.navbar {
+  text-align: center;
+  justify-content: space-between;
+  display: flex;
+  padding-bottom: 20px;
+  flex-direction: column;
+  border-bottom: 1px solid gray;
+}
+
+.displayList {
+  display: flex;
+  flex-direction: column;
+}
+
+.displayItem {
+  display: flex;
+}
+
+input {
+  margin-left: 10px;
+  margin: 4px;
+}
+
+button {
+  margin-top: 10px;
+  width: 60px;
+  height: 30px;
+}
